@@ -1,0 +1,4 @@
+INSERT INTO country (countryname) VALUES ("Egypt");
+INSERT INTO city (cname, countryid) VALUES ("Alexandria", 1);
+INSERT INTO warehouse (Aval_capacity, location, city_id) VALUES ("10","alexandria", "2");
+DELETE FROM person

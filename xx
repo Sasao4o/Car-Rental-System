@@ -1,0 +1,108 @@
+1. add office (mrbot bel rerserve. we el city )
+==================================================
+ CREATE TABLE country(
+ countryid INT NOT NULL PRIMARY KEY,
+ countryname VARCHAR(40) NOT NULL
+);
+CREATE TABLE city(
+ cid INT NOT NULL PRIMARY KEY,
+ cname VARCHAR(40) NOT NULL,
+ countryid INT NOT NULL ,
+ FOREIGN KEY(countryid) REFERENCES country(countryid)
+
+); .
+
+CREATE TABLE person(
+    pid INT NOT NULL PRIMARY KEY,
+    fname VARCHAR(40) NOT NULL,
+    mname VARCHAR(40),
+    lname VARCHAR(40) NOT NULL,
+    email VARCHAR(225),
+    gender ENUM('male', 'female'),
+    cid INT,
+    mobileno VARCHAR(15),
+    PASSWORD VARCHAR(30),
+    BankNo VARCHAR(15),
+    FOREIGN KEY(cid) REFERENCES city(cid)
+); 
+
+CREATE TABLE employee(
+    eid INT NOT NULL PRIMARY KEY,
+    salary FLOAT NOT NULL,
+    role ENUM('SuperAdmin', 'Admin', 'Regular'),
+    enrolled_date TIMESTAMP,
+    POSITION VARCHAR(30),
+    pid INT NOT NULL,
+    FOREIGN KEY(pid) REFERENCES person(pid)
+); CREATE TABLE demander(
+    Did INT NOT NULL PRIMARY KEY,
+    D_BankNo VARCHAR(15),
+    pid INT NOT NULL,
+    FOREIGN KEY(pid) REFERENCES person(pid)
+); CREATE TABLE supplier(
+    sid INT NOT NULL,
+    S_BankNo VARCHAR(15) NOT NULL,
+    car_count INT,
+    pid INT NOT NULL,
+    FOREIGN KEY(pid) REFERENCES person(pid),
+    PRIMARY KEY(S_BankNo, sid)
+); CREATE TABLE payment(
+    pay_id INT NOT NULL PRIMARY KEY,
+    amount INT NOT NULL,
+    BankNo VARCHAR(15)
+);CREATE TABLE warehouse(
+    warehouse_id INT NOT NULL PRIMARY KEY,
+    Aval_capacity INT NOT NULL,
+    location VARCHAR(225),
+    city_id INT NOT NULL,
+    FOREIGN KEY(city_id) REFERENCES city(cid)
+); CREATE TABLE car(
+    car_id INT NOT NULL PRIMARY KEY,
+    NAME VARCHAR(225) NOT NULL,
+    model VARCHAR(6),
+    plate_no VARCHAR(10),
+    STATUS VARCHAR
+        (220),
+        cond VARCHAR(220),
+        warehouse_id INT NOT NULL,
+        FOREIGN KEY(warehouse_id) REFERENCES warehouse(warehouse_id)
+);
+CREATE TABLE contract(
+    contra_id INT NOT NULL PRIMARY KEY,
+    sid INT NOT NULL,
+    Bank_no varchar(15) not null,
+    car_id INT NOT NULL,
+    cost FLOAT,
+    start_date DATE,
+    end_date DATE,
+    FOREIGN KEY(car_id) REFERENCES Car(car_id),
+    FOREIGN KEY(sid,Bank_no) REFERENCES supplier(sid,S_BankNo)
+);CREATE TABLE employee_pay_cont(
+    eid INT NOT NULL,
+    pid INT NOT NULL,
+    contra_id INT NOT NULL,
+    PRIMARY KEY(eid, pid, contra_id),
+    FOREIGN KEY(eid) REFERENCES employee(eid),
+    FOREIGN KEY(pid) REFERENCES payment(pay_id),
+    FOREIGN KEY(contra_id) REFERENCES contract(contra_id)
+); CREATE TABLE reservation(
+    reserve_id INT NOT NULL,
+    Did INT NOT NULL,
+    startDate DATE NOT NULL,
+    EndDate DATE NOT NULL,
+    car_id INT NOT NULL,
+    Eid INT NOT NULL,
+    PRIMARY KEY(reserve_id),
+    FOREIGN KEY(car_id) REFERENCES Car(car_id),
+    FOREIGN KEY(Eid) REFERENCES Employee(eid)
+);CREATE TABLE demander_pay(
+    Did INT NOT NULL,
+    reserve_id INT NOT NULL,
+    pid INT NOT NULL,
+    eid INT NOT NULL,
+    PRIMARY KEY(eid, pid),
+    FOREIGN KEY(eid) REFERENCES employee(eid),
+    FOREIGN KEY(pid) REFERENCES payment(pay_id),
+    FOREIGN KEY(reserve_id) REFERENCES reservation(reserve_id)
+);
+ 

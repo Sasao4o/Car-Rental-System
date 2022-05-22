@@ -1,3 +1,4 @@
+// WON'T BE USED
 const conn = require("../db");
 const cityCountryModel = {};
 

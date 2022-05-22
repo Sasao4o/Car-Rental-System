@@ -3,6 +3,7 @@ const authTools = require("../utilis/authTools");
 const catchAsync = require("../utilis/catchAsync");
 exports.signUp = catchAsync(async function (req, res, next) {
     let user = {};
+     
      user.firstname = req.body.firstname;
      user.middlename = req.body.middlename;
      user.lastname = req.body.lastname;
@@ -10,7 +11,8 @@ exports.signUp = catchAsync(async function (req, res, next) {
      user.password = req.body.password;
      user.gender = req.body.gender;
      user.role= "user";
-     //Client Means He Is Either Demander or Suppiler
+     user.userRole = req.body.userRole;
+     user.carCount = req.body.carCount;
      user.cityId = req.body.cityId;
      user.phoneNumber =req.body.phoneNumber;
      user.visaNo=req.body.visaNo;
@@ -42,12 +44,12 @@ exports.signIn = catchAsync(async function(req, res, next) {
      
     const isPasswordTrue = authTools.verifyPassword(password, currentUser.PASSWORD)
      if (!isPasswordTrue) {
-        next("Please Enter Correct Email And Password");
+       return next("Please Enter Correct Email And Password");
      }
      const jwt = authTools.generateToken({id:currentUser.pid});
      res.cookie("jwt", jwt);
     res.json({
-        status:404,
+        status:202,
         message:"Success",
         jwt
     });
@@ -65,7 +67,19 @@ exports.signOut = catchAsync(async function (req, res ,next) {
 });
 
 //Authentication
-
+exports.protectRoute = catchAsync(async (req, res, next) => {
+    const token =  req.cookies.jwt;
+    if (!token) return next(new AppError("Please Sign In"), 404);
+    const tokenVeri = await authTool.tokenVerify(token); 
+    if (!tokenVeri) return next(new AppError("Please Sign In Again", 404) );
+    const user = await userModel.findOne({_id: tokenVeri.id});
+    if (!user) return next(new AppError("Please sign in again error token is invalid", 404))
+    if (user.passwordUpdated) { 
+    if (tokenVeri.iat * 1000 < user.passwordUpdatedAt) return next(new AppError("Please Sign In Again as your pw changed recently"), 404);
+    }
+    req.user = user;
+    next();
+ });
 
 //Authorization
 exports.restrictedTo = (...roles) => {

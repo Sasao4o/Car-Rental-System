@@ -35,16 +35,16 @@ CREATE TABLE employee(
     enrolled_date TIMESTAMP,
     POSITION VARCHAR(30),
     In_Work enum('Full Load','Free'),	
-    pid INT NOT NULL,
+    pid INT NOT NULL UNIQUE,
     FOREIGN KEY(pid) REFERENCES person(pid)
 ); CREATE TABLE demander(
     Did INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    pid INT NOT NULL,
+    pid INT NOT NULL UNIQUE,
     FOREIGN KEY(pid) REFERENCES person(pid)
 ); CREATE TABLE supplier(
     sid INT NOT NULL AUTO_INCREMENT,
     car_count INT,
-    pid INT NOT NULL,
+    pid INT NOT NULL UNIQUE,
     FOREIGN KEY(pid) REFERENCES person(pid),
     PRIMARY KEY(sid)
 ); CREATE TABLE payment(
@@ -106,4 +106,3 @@ CREATE TABLE contract(
     FOREIGN KEY(pid) REFERENCES payment(pay_id),
     FOREIGN KEY(reserve_id) REFERENCES reservation(reserve_id)
 );
- 

@@ -6,7 +6,7 @@ exports.insertCar = catchAsync(async function (req, res, next) {
     let car = {};
     car.model = req.body.model;
     car.plate_no = req.body.plate_no;
-    car.status = req.body.status;
+    car.status = "active";
     car.cond = req.body.cond;
     //Check If This warehouse has space
     car.warehouse_id = req.body.warehouse_id;
@@ -20,7 +20,12 @@ exports.insertCar = catchAsync(async function (req, res, next) {
     });
 
 
-
-
+});
+exports.getAvailableCars = catchAsync(async function (req, res, next) {
+const availCars = await carModel.find({Status:"active"});
+res.status(200).json({
+    status:"Success",
+    cars:availCars
+})
 
 });

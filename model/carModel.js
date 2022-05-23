@@ -18,20 +18,46 @@ carModel.create = function(car) {
         const queryPromise = util.promisify(conn.query).bind(conn);
         return queryPromise(sql);
 }
- 
+    carModel.find = function(conditionsObject) {
+    let conditions = "";
+    var counter = 1;
+ for (const property in conditionsObject) {
+     if (counter > 1) {
+         conditions += ' AND ';
+     }
+     counter++;
+   conditions += `${property} = '${conditionsObject[property]}'`
+ }
+     const sql = `SELECT * FROM car WHERE ${conditions}`;
+     const queryPromise = util.promisify(conn.query).bind(conn);
+     return queryPromise(sql);
+ }
 carModel.findById = function () {
 
 
 }
 
 carModel.findAll = function () {
+    
+}
+
+carModel.updateById = function(id,conditionsObject) {
+    let conditions = "";
+   var counter = 1;
+for (const property in conditionsObject) {
+    if (counter > 1) {
+        conditions += ',';
+    }
+    counter++;
+  conditions += `${property} = '${conditionsObject[property]}'`;
+  
+}
+    const sql = `UPDATE  car SET ${conditions} WHERE car_id = ${id}`
+    const queryPromise = util.promisify(conn.query).bind(conn);
+    return queryPromise(sql);
 
 }
 
-carModel.updateById = function() {
-
-
-}
 
 carModel.deleteById = function () {
 

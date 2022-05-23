@@ -18,6 +18,7 @@ function userModel(user) {
     this.cityId = user.cityId;
     this.phoneNumber = user.phoneNumber;
     this.visaNo = user.visaNo;
+    this.enrolled_date=user.enrolled_date;
    
 }
 
@@ -29,27 +30,51 @@ userModel.create = function(user) {
  
     //End Hashing
     const newUser = new userModel(user);  
-    const userRole ='${newUser.userRole}';
-    var sql='';  
-    if (userRole=="Demander"){
-     sql = `INSERT INTO person (fname,mname,lname,email,gender,role,cid,mobileno, PASSWORD, BankNo) VALUES 
+    const userRole =newUser.userRole;
+    var sql="";  
+     sql =
+      `INSERT INTO person (fname,mname,lname,email,gender,role,cid,mobileno, PASSWORD, BankNo) VALUES 
     ('${newUser.firstname}', '${newUser.middlename}','${newUser.lastname}', '${newUser.email}', '${newUser.gender}', 
         '${newUser.role}', '${newUser.cityId}','${newUser.phoneNumber}','${newUser.password}','${newUser.visaNo}');
-        INSERT INTO demander (pid) VALUES('${newUser.pid});'
-        `;}
-        else{
-            sql = `INSERT INTO person (fname,mname,lname,email,gender,role,cid,mobileno, PASSWORD, BankNo) VALUES 
-            ('${newUser.firstname}', '${newUser.middlename}','${newUser.lastname}', '${newUser.email}', '${newUser.gender}', 
-                '${newUser.role}', '${newUser.cityId}','${newUser.phoneNumber}','${newUser.password}','${newUser.visaNo}');
-                INSERT INTO supplier (pid,car_count) VALUES('${newUser.pid}','${newUser.carCount}');`;
-
-        }
+        `;
+    
+    // INSERT INTO demander (pid) VALUES('SELECT MAX(pid) FROM person');
+    // INSERT INTO supplier (pid,car_count) VALUES("SELECT MAX(pid) FROM person",'${newUser.carCount}');
         const queryPromise = util.promisify(conn.query).bind(conn);
         //Bind To Make This inside promisify Refer to conn
         return queryPromise(sql);
     
 }
- 
+userModel.createDemanderOrSupplierOrEmp = function(user) {
+    //Hash My Password
+   //End Hashing
+   const newUser = new userModel(user);  
+   const userRole =newUser.userRole;
+   var sql="";  
+   if(userRole=="Demander"){
+    sql =
+     `INSERT INTO demander(pid) SELECT MAX(pid) FROM person LIMIT 1; `;
+   }
+   else if (userRole=="Supplier"){
+    sql =
+    `INSERT INTO supplier(pid) SELECT MAX(pid),'${newUser.carCount}' FROM person LIMIT 1; `;
+   }
+   else{
+
+    sql =
+    `INSERT INTO employee (salary,enrolled_date,POSITION,In_Work,pid) SELECT MAX(pid),"2000","${newUser.enrolled_date}","N/A","Free",'${newUser.carCount}' FROM person; `;
+
+
+   }
+   // INSERT INTO demander (pid) VALUES('SELECT MAX(pid) FROM person');
+   // INSERT INTO supplier (pid,car_count) VALUES("SELECT MAX(pid) FROM person",'${newUser.carCount}');
+       const queryPromise = util.promisify(conn.query).bind(conn);
+       //Bind To Make This inside promisify Refer to conn
+       return queryPromise(sql);
+   
+}
+
+
 userModel.findById = function (id) {
     const sql = `SELECT * FROM person WHERE pid = ${id}`
         const queryPromise = util.promisify(conn.query).bind(conn);
@@ -78,6 +103,12 @@ userModel.findAll = function () {
 
 }
 
+userModel.findPayByPeriod = function (start_date,end_date) {
+    const sql = `SELECT * FROM payment WHERE pay_date BETWEEN '${start_date}' AND '${end_date}' `;
+    const queryPromise = util.promisify(conn.query).bind(conn);
+    return queryPromise(sql);
+
+}
 userModel.updateById = function(id,conditionsObject) {
     let conditions = "";
    var counter = 1;

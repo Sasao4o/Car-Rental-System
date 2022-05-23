@@ -1,0 +1,17 @@
+ALTER TABLE reservation ADD pay_status enum ("paid","Not") NOT NULL;
+DROP TABLE demander_pay;
+CREATE TABLE demander_pay(
+    Did INT NOT NULL,
+    reserve_id INT NOT NULL,
+    pid INT NOT NULL,
+    PRIMARY KEY(Did, pid),
+    FOREIGN KEY(Did) REFERENCES demander(Did),
+    FOREIGN KEY(pid) REFERENCES payment(pay_id),
+    FOREIGN KEY(reserve_id) REFERENCES reservation(reserve_id)
+);
+ALTER TABLE reservation ADD reserve_status enum("On","Terminated") NOT NULL;
+ALTER TABLE reservation ADD FOREIGN KEY (Did) REFERENCES demander(Did);
+ALTER TABLE payment ADD pay_dir enum ("In","Out") NOT NULL;
+ALTER TABLE reservation ADD reserve_date date NOT NULL;
+ALTER TABLE payment ADD pay_date date NOT NULL;
+

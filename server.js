@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/car", carRoute);
 app.use("/api/v1/city", cityRoute);
-app.use("/api/v1/reservation", reservationRoute)
+app.use("/api/v1/reservation", reservationRoute);
     //Handle The Error
 app.use((err,req,res,next) => {
      console.log(err);

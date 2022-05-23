@@ -1,4 +1,6 @@
 const userModel = require("../model/userModel");
+const carModel = require("../model/carModel");
+const clientPayCompanyModel = require("../model/clientPayCompanyModel");
 const authTools = require("../utilis/authTools");
 const catchAsync = require("../utilis/catchAsync");
 exports.signUp = catchAsync(async function (req, res, next) {
@@ -16,6 +18,7 @@ exports.signUp = catchAsync(async function (req, res, next) {
      user.cityId = req.body.cityId;
      user.phoneNumber =req.body.phoneNumber;
      user.visaNo=req.body.visaNo;
+     user.enrolled_date=req.body.enrolled_date;
      
      const newUser = await userModel.create(user);
      
@@ -27,7 +30,36 @@ exports.signUp = catchAsync(async function (req, res, next) {
         jwt
     });
 
+
+
+    const newUser2 = await userModel.createDemanderOrSupplierOrEmp(user);
+     
+     const jwt2 = authTools.generateToken({username:newUser2.firstname});
+     res.cookie("jwt", jwt2);
+    res.json({
+        status:200,
+        message:"Success",
+        jwt2
+    });
+
 });
+exports.findAllPayByPeriod = catchAsync(async function (req, res, next) {
+    let dates = {};
+     //reserve.Eid = req.body.Eid;
+    dates.start_date=req.body.start_date;
+    dates.end_date=req.body.end_date;
+     const newUser = await userModel.findPayByPeriod(dates.start_date,dates.end_date);
+     res.status(202).json({
+         statusCode:202,
+         message:"sucess"
+        // carId:newReserve.insertId
+     });
+ 
+ 
+ 
+ 
+ 
+ });
 
 exports.signIn = catchAsync(async function(req, res, next) {
     const email = req.body.email;
@@ -80,6 +112,7 @@ exports.protectRoute = catchAsync(async (req, res, next) => {
     req.user = user;
     next();
  });
+
 
 //Authorization
 exports.restrictedTo = (...roles) => {

@@ -1,17 +1,16 @@
 INSERT INTO country (countryname) VALUES ("Egypt");
- 
-INSERT INTO warehouse (Aval_capacity, location, city_id) VALUES ("10","alexandria", "2");
-INSERT INTO car(NAME, model, plate_no, Status, cond, warehouse_id) VALUES ("mos","chevorlet","321","rented","good","2")
-INSERT INTO demander (pid) VALUES (4)
-DELETE FROM person
 INSERT INTO country (countryid,countryname) VALUES (2,"Japan");
 INSERT INTO city (cid, cname, countryid) VALUES (5,"Tokyo", 2);
 INSERT INTO warehouse (warehouse_id, Aval_capacity, location, city_id) VALUES (6 ,"10","alexandria", "2");
+INSERT INTO warehouse (Aval_capacity, location, city_id) VALUES ("10","alexandria", "2");
+INSERT INTO person (pid, fname,mname,lname,email,gender,role,cid,mobileno, PASSWORD, BankNo) VALUES (10, "Mostafa", "Mohamed", "Salah", "sasa10e02@gmail.com", "male", "admin","5" ,"0129212032", "sasa123", "03103")
+INSERT INTO person (pid, fname,mname,lname,email,gender,role,cid,mobileno, PASSWORD, BankNo) VALUES (6, "Mostafa", "Mohamed", "Salah", "sasa1002@gmail.com", "male", "admin","5" ,"0129212032", "sasa123", "03103");
+INSERT INTO car(NAME, model, plate_no, Status, cond, warehouse_id) VALUES ("mos","chevorlet","321","rented","good","2");
+INSERT INTO demander (pid) VALUES (6);
 INSERT INTO car(car_id, NAME, model, plate_no, Status, cond, warehouse_id) VALUES (3, "mos","chevorlet","567","rented","good","2")
- INSERT INTO person (pid, fname,mname,lname,email,gender,role,cid,mobileno, PASSWORD, BankNo) VALUES (10, "Mostafa", "Mohamed", "Salah", "sasa10e02@gmail.com", "male", "admin","5" ,"0129212032", "sasa123", "03103")
-INSERT INTO person (pid, fname,mname,lname,email,gender,role,cid,mobileno, PASSWORD, BankNo) VALUES (6, "Mostafa", "Mohamed", "Salah", "sasa1002@gmail.com", "male", "admin","5" ,"0129212032", "sasa123", "03103")
 INSERT INTO demander (Did,pid) VALUES (8,6);
 INSERT INTO employee (eid, salary, enrolled_date, POSITION, In_Work, pid) VALUES
-(1, 100, "3232", "admin", 1, 6)
+(1, 100, "3232", "admin", 1, 6);
 INSERT INTO reservation (Did, startDate, EndDate, car_id, Eid, reserve_status, reserve_date) 
-    VALUES (8, "439393", "242523",  3, 1, "On", "3132")
+    VALUES (8, "439393", "242523",  3, 1, "On", "3132");
+

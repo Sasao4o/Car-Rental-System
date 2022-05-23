@@ -6,15 +6,15 @@ function carModel(car) {
     this.status = car.status;
     this.cond = car.cond;
     this.warehouse_id = car.warehouse_id;
-
+    this.car_id= car.car_id;
     this.name = car.name;
 
 }
 carModel.create = function(car) {
 
         const newCar = new carModel(car);    
-        const  sql = `INSERT INTO car(NAME, model, plate_no, Status, cond, warehouse_id) 
-        VALUES ("${newCar.name}", "${newCar.model}", "${newCar.plate_no}", "${newCar.status}", "${newCar.cond}", "SELECT warehouse_id FROM warehouse where Avail_capacity>0 LIMIT 1")`;
+        const  sql = `INSERT INTO car(NAME, model, plate_no, Status, cond, warehouse_id) SELECT 
+         "${newCar.name}", "${newCar.model}", "${newCar.plate_no}", "${newCar.status}", "${newCar.cond}", warehouse_id  FROM warehouse where Aval_capacity>0 LIMIT 1`;
         const queryPromise = util.promisify(conn.query).bind(conn);
         return queryPromise(sql);
 }
@@ -35,8 +35,18 @@ carModel.find = function (conditionsObject) {
 
 }
 
-carModel.findAll = function () {
+carModel.findAllA = function () {
     const sql = `SELECT * FROM car `;
+    const queryPromise = util.promisify(conn.query).bind(conn);
+    return queryPromise(sql);
+}
+carModel.findStatAll = function () {
+    const sql = `SELECT car_id , Status FROM car `;
+    const queryPromise = util.promisify(conn.query).bind(conn);
+    return queryPromise(sql);
+}
+carModel.findAllU = function () {
+    const sql = `SELECT * FROM car WHERE Status = 'active' `;
     const queryPromise = util.promisify(conn.query).bind(conn);
     return queryPromise(sql);
 }
@@ -45,13 +55,15 @@ carModel.updateById = function(id,conditionsObject) {
     let conditions = "";
    var counter = 1;
 for (const property in conditionsObject) {
+  //  if(counter == 0)   {counter++;  continue;}
     if (counter > 1) {
-        conditions += ' AND ';
+        conditions += ',';
     }
     counter++;
-  conditions += `${property} = '${conditionsObject[property]}'`
+  conditions += `${property} = '${conditionsObject[property]}'`;
+  
 }
-    const sql = `UPDATE  car SET ${conditions} WHERE cid = ${id}`
+    const sql = `UPDATE  car SET ${conditions} WHERE car_id = ${id}`
     const queryPromise = util.promisify(conn.query).bind(conn);
     return queryPromise(sql);
 

@@ -13,6 +13,7 @@ exports.AddReservation = catchAsync(async function (req, res, next) {
     reserve.Eid = req.body.Eid;
     reserve.CarStatus= req.body.CarStatus;
     reserve.reserve_date = req.body.reserve_date;
+    reserve.pay_status = req.body.pay_status;
     const newReserve = await reservationModel.create(reserve);
     res.status(202).json({
         statusCode:202,
@@ -20,6 +21,12 @@ exports.AddReservation = catchAsync(async function (req, res, next) {
         carId:newReserve.insertId
     });
 
+    const newReserve2 = await reservationModel.UpdateCar(reserve);
+    res.status(202).json({
+        statusCode:202,
+        message:"sucess",
+        carId:newReserve2.insertId
+    });
 
 
 
@@ -61,6 +68,42 @@ exports.Search4ReserveByEmp = catchAsync(async function (req, res, next) {
 
 
 });
+
+exports.findAllRevsByPeriod = catchAsync(async function (req, res, next) {
+   let dates = {};
+    //reserve.Eid = req.body.Eid;
+   dates.start_date=req.body.start_date;
+   dates.end_date=req.body.end_date;
+    const newReserve = await reservationModel.findAllByPeriod(dates.start_date,dates.end_date);
+    res.status(202).json({
+        statusCode:202,
+        message:"sucess"
+       // carId:newReserve.insertId
+    });
+
+
+
+
+
+});
+
+exports.findAllRevsByCus = catchAsync(async function (req, res, next) {
+    //let dates = {};
+     //reserve.Eid = req.body.Eid;
+   // dates.start_date=req.body.start_date;
+    //dates.end_date=req.body.end_date;
+     const newReserve = await reservationModel.findCusRsrv();
+     res.status(202).json({
+         statusCode:202,
+         message:"sucess"
+        // carId:newReserve.insertId
+     });
+ 
+ 
+ 
+ 
+ 
+ });
 
 exports.TerminateReserve = catchAsync(async function (req, res, next) {
     let reserve = {};

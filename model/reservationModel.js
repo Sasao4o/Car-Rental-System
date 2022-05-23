@@ -10,15 +10,23 @@ function reservationModel(reserve) {
     this.CarStatus = reserve.CarStatus;
     this.reserve_status=reserve.reserve_status;
     this.reserve_date=reserve.reserve_date;
-};
+    this.pay_status=reserve.pay_status;
+};   
 
 
 reservationModel.create = function(reserve) {
     const newreserve = new reservationModel(reserve);    
-    const  sql = ` INSERT INTO reservation (Did, startDate, EndDate, car_id, Eid, reserve_status, reserve_date) 
-    VALUES ("${newreserve.Did}", "${newreserve.startDate}", "${newreserve.EndDate}", "${newreserve.car_id}", "${newreserve.Eid}","On","${newreserve.reserve_date}");
-    UPDATE car SET Status = 'reserved' WHERE car_id = ${newreserve.car_id};
+    const  sql = ` INSERT INTO reservation  (Did, startDate, EndDate, car_id, Eid, reserve_status, reserve_date ,pay_status) 
+    SELECT  "${newreserve.Did}", "${newreserve.startDate}", "${newreserve.EndDate}", "${newreserve.car_id}", eid ,"On","${newreserve.reserve_date}","${newreserve.pay_status}" FROM employee WHERE In_Work = "Free" LIMIT 1;
     `;
+    const queryPromise = util.promisify(conn.query).bind(conn);
+    return queryPromise(sql);
+
+}
+
+reservationModel.UpdateCar = function(reserve) {
+    const newreserve = new reservationModel(reserve);    
+    const  sql = ` UPDATE car SET Status = 'reserved' WHERE car_id = ${newreserve.car_id}; `;
     const queryPromise = util.promisify(conn.query).bind(conn);
     return queryPromise(sql);
 
@@ -33,21 +41,21 @@ reservationModel.findCarRsrv = function (plate_no) {
 }
 
 reservationModel.findEmpRsrv = function (id) {   
-    const  sql = `SELECT * FROM reservation WHERE Eid = '${Eid}';`;
+    const  sql = `SELECT * FROM reservation WHERE Eid = '${id}';`;
     const queryPromise = util.promisify(conn.query).bind(conn);
     return queryPromise(sql);
 
 
 }
 reservationModel.findCusRsrv = function (id) {   
-    const  sql = `SELECT * FROM reservations WHERE Did = '${id}';`;
+    const  sql = `SELECT * FROM reservations AS r INNER JOIN demander AS d INNER JOIN person AS p INNER JOIN car AS c on( r.Did = d.Did AND r.car_id = c.car_id AND d.pid = p.pid) WHERE Did = '${id}' GROUP BY d.Did;`;
     const queryPromise = util.promisify(conn.query).bind(conn);
     return queryPromise(sql);
 
 
 }
-reservationModel.findAll = function () {
-   const sql = `SELECT * FROM reservation `;
+reservationModel.findAllByPeriod= function (start_date,end_date) {
+   const sql = `SELECT * FROM reservation AS r INNER JOIN demander AS d INNER JOIN person AS p on(r.Did=d.Did AND d.pid=p.pid )WHERE reserve_date BETWEEN '${start_date} AND '${end_date}' GROUP BY reserve_id`;
     const queryPromise = util.promisify(conn.query).bind(conn);
     return queryPromise(sql);
 }

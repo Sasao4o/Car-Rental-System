@@ -50,27 +50,33 @@ exports.signUp = catchAsync(async function (req, res, next) {
 exports.signIn = catchAsync(async function(req, res, next) {
     const email = req.body.email;
     const password = req.body.password;
+    console.log(req.body);
     if (!email || !password) {
        return next("Please Enter Email And Password");
     }
     const user = await userModel.find({email});
+     
     const currentUser = user[0];
     if (!currentUser) {
 
         return next("Please Enter Correct Email And Password");
     }
-     
-    const isPasswordTrue = authTools.verifyPassword(password, currentUser.PASSWORD)
+   
+   
+    const isPasswordTrue = authTools.verifyPassword(password, currentUser.PASSWORD);
      if (!isPasswordTrue) {
         return next("Please Enter Correct Email And Password");
      }
      const jwt = authTools.generateToken({id:currentUser.pid});
      res.cookie("jwt", jwt);
+     /*
     res.json({
         status:404,
         message:"Success",
         jwt
     });
+    */
+     res.redirect("/");
 });
 
 exports.signOut = catchAsync(async function (req, res ,next) {
@@ -99,7 +105,17 @@ exports.protectRoute = catchAsync(async (req, res, next) => {
     next();
  });
 
-
+exports.protectRoute = catchAsync(async (req, res, next) => {
+    const token =  req.cookies.jwt;
+    if (!token) return next("Please Sign In");
+    const tokenVeri = await authTools.tokenVerify(token); 
+    if (!tokenVeri) return next("Please Sign In Again");
+    const user = await userModel.find({pid:tokenVeri.id});
+    if (!user) return next("Please sign in again error token is invalid", 404)
+    req.user = user;
+    next();
+ });
+ 
 //Authorization
 exports.restrictedTo = (...roles) => {
 

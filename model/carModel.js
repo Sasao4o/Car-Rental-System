@@ -32,13 +32,19 @@ carModel.create = function(car) {
      const queryPromise = util.promisify(conn.query).bind(conn);
      return queryPromise(sql);
  }
-carModel.findById = function () {
+carModel.findById = function (id) {
+    const sql = `SELECT * FROM car WHERE car_id = ${id}`
+    const queryPromise = util.promisify(conn.query).bind(conn);
+    return queryPromise(sql);
 
+        
 
 }
 
 carModel.findAll = function () {
-    
+    const  sql = `SELECT * FROM car`
+    const queryPromise = util.promisify(conn.query).bind(conn);
+    return queryPromise(sql);
 }
 
 carModel.updateById = function(id,conditionsObject) {
@@ -65,6 +71,25 @@ carModel.deleteById = function () {
 }
 
 
+carModel.findAllCarByPeriod = function (plate_no,startDate,endDate) {   
+    const  sql = `SELECT r.reserve_date,r.startDate,r.endDate,r.reserve_status,r.pay_status,c.NAME,c.model,c.plate_no,c.cond FROM reservation AS r INNER JOIN car AS c on( r.car_id = c.car_id ) WHERE c.plate_no = '${plate_no}' AND r.reserve_date BETWEEN '${startDate}' AND '${endDate}'GROUP BY r.reserve_id;`;
+    const queryPromise = util.promisify(conn.query).bind(conn);
+    return queryPromise(sql);
 
-
+    
+}
+carModel.findStatAll = function (day) {
+    const sql = `
+    SELECT C.car_id ,C.model, "active" 
+    FROM car C LEFT JOIN reservation R ON C.car_id = R.car_id
+    WHERE startDate IS NULL OR '${day}' NOT BETWEEN reserve_date and EndDate
+    UNION
+    SELECT C1.car_id ,C1.model, "reserved" 
+    FROM car C1 LEFT JOIN reservation R1 ON C1.car_id = R1.car_id
+    WHERE '${day}' BETWEEN reserve_date and EndDate
+    GROUP BY C1.car_id;
+    `;
+    const queryPromise = util.promisify(conn.query).bind(conn);
+    return queryPromise(sql);
+}
 module.exports = carModel;

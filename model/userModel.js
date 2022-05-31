@@ -70,8 +70,19 @@ userModel.deleteById = function () {
 
 
 }
+userModel.findPayByPeriod = function (start_date,end_date) {
+    const sql = `SELECT r.reserve_id, r.startDate, r.endDate, c.plate_no, r.Did, p.pay_date  
+    FROM payment AS p 
+    INNER JOIN demander_pay AS dp 
+    INNER JOIN reservation AS r
+    INNER JOIN car AS c 
+    on
+    (p.pay_id=dp.pid AND dp.reserve_id=r.reserve_id AND r.car_id=c.car_id) 
+     WHERE pay_date BETWEEN '${start_date}' AND '${end_date}' ;` ;
+    const queryPromise = util.promisify(conn.query).bind(conn);
+    return queryPromise(sql);
 
-
+}
 
 
 module.exports = userModel;

@@ -8,37 +8,35 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
 <body>
-    <form action="" method="POST">
-        <label>Enter start date :</label>
-        <input type="date" id="StartDay" name = "StartDay" class="form-control">
+    <form id="form" action="" method="POST">
+      <label>Enter start date :</label>
+      <input type="date" id="startDay" name = "StartDay" class="form-control" required>
+      <br>
+      <br>
+      <label>Enter end date :</label>
+      <input type="date" id="endDay" name = "endDay" class="form-control" required>
+      <br>
+        <label>Enter Car Plate Number :</label>
+        <input type="text" id="plate_no" name = "plate_no" class="form-control">
         <br>
         <br>
-        <label>Enter end date :</label>
-        <input type="date" id="endDay" name = "endDay" class="form-control">
-        <br>
-        <br>
+       
         <input type="submit">
     </form>
     <br>
     <br>
-    <table class="table table-hover" id="car table">
+    <table class="table table-hover" id="table">
       <thead>
         <tr>
             <th scope="col">reserve_date</th>
             <th scope="col">startDate</th>
-            <th scope="col">endDate</th>
+            <th scope="col">EndDate</th>
             <th scope="col">reserve_status</th>
             <th scope="col">pay_status</th>
             <th scope="col">NAME</th>
             <th scope="col">model</th>
             <th scope="col">plate_no</th>
             <th scope="col">cond</th>
-            <th scope="col">fname</th>
-            <th scope="col">lname</th>
-            <th scope="col">email</th>
-            <th scope="col">gender</th>
-            <th scope="col">mobileno</th>
-            <th scope="col">BankNo</th>
             
             
         </tr>
@@ -49,3 +47,6 @@
     </table>
 </body>
 </html>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script src="/js/report2.js"></script>

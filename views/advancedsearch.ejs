@@ -1,0 +1,112 @@
+<link rel="stylesheet" href="../css/advancedsearch.css"></link>
+<section>
+    <div class="container">
+      <h1 id="title">Car Form</h1>
+      <p id="description">
+         Please Enter All Car Specs
+      </p>
+
+      <form id="searchForm" method="POST" action="/search/results">
+        <div class="inputwrap col">
+          <label for="name"  class="bold">Name</label>
+          <input
+            class="mt8"
+            type="text"
+           
+            id="clientName"
+            placeholder="Enter Client Name"
+          />
+        </div>
+        <div class="inputwrap col">
+          <label for="name"   class="bold">Email</label>
+          <input
+            class="mt8"
+            type="text"
+            id="clientEmail"
+            
+            placeholder="Enter Client Email"
+          />
+        </div>
+        <div class="inputwrap col">
+          <label for="name" id="name-label" class="bold">Mobile Number</label>
+          <input
+            class="mt8"
+            type="text"
+            id="mobileNumber"
+   
+            placeholder="Enter Client Mobile Number"
+          />
+        </div>
+        <div class="inputwrap col">
+          <label for="name" id="name-label" class="bold">Car Plate</label>
+          <input
+            class="mt8"
+            type="text"
+            id="carPlate"
+       
+            
+            placeholder="Enter Car Plate"
+          />
+        </div>
+        <div class="inputwrap col">
+          <label for="email" id="email-label" class="bold">Model</label>
+          <input
+            class="mt8"
+       
+            
+            id="carModel"
+            placeholder="Enter Car Model"
+          />
+        </div>
+        <div class="inputwrap col">
+          <label for="number" id="number-label" class="bold">Car Condition</label>
+          <input
+            class="mt8"
+            id="carCondition"
+            placeholder="Enter Car Condition"
+          />
+        </div>
+ 
+
+       
+        <div class="inputwrap col">
+          <label for="checkin-date" class="bold">Start Date</label>
+          <input type="date" id="start-date" name="checkin" >
+        </div>
+        <div class="inputwrap col">
+          <label for="checkout-date" class="bold">End Date</label>
+          <input type="date" id="end-date" name="checkout">
+        </div>
+        <div class="inputwrap col">
+          <label for="res-date" class="bold">Reservation Date</label>
+          <input type="date" id="res-date" name="resdate" >
+        </div>
+          <div class="inputwrap col">
+            <label class="bold">Reservation Status</label>
+            <select id="reservationStatus" class="mt8">
+              <option>any</option>
+              <option>reserved</option>
+              <option>rented</option>   
+              <option>active</option>   
+              <option>broken</option>               
+              </select>
+        </div>
+        <div class="inputwrap col">
+          <label class="bold">Paid</label>
+          <select id="carPaid" class="mt8">
+            <option>any</option>
+            <option>paid</option>
+            <option>Not</option>            
+            </select>
+      </div>
+        <button type="submit" id="submit">Search</button>
+      </form>
+    </div>
+  </section>
+
+  <table class="table table-hover" id="table">
+
+  </table>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <script src="/js/index.js"></script>

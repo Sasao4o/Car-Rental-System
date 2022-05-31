@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Car renting system</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+<form  id="registerForm" method="POST" action="/api/v1/user/register">
+     
+    <div class="mb-3">
+        <label for="fname" class="form-label">First Name</label>
+        <input type="text" class="form-control" id="fname" name="fname"  required>
+      </div>
+    
+    <div class="mb-3">
+        <label for="mname" class="form-label">Middle Name</label>
+        <input type="text" class="form-control" id="mname" name="mname"  required>
+      </div>
+
+    <div class="mb-3">
+        <label for="lname" class="form-label">Last Name</label>
+        <input type="text" class="form-control" id="lname" name="lname"  required>
+      </div>
+
+    <div id="genderC"  class="btn-group" data-toggle="buttons">
+        <label  class="btn btn-primary">
+          <input type="radio" name="gender" id="male" value="male" autocomplete="off" required>Male
+        </label>
+  
+        <label class="btn btn-primary">
+          <input type="radio" name="gender" id="female" value="female" autocomplete="off" required>Female
+        </label>
+        </div>
+        <br>
+        <br>
+
+    <div class="mb-3">
+        <label for="phone">Enter your phone number:</label>
+        <input type="tel" id="mobileno" name="mobileno"   required> 
+    </div>
+
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" name="password" required>
+      </div>
+
+      
+      <br>
+      <br>
+      <button type="Sign Up" class="btn btn-primary" id="signUp-button">Submit</button>
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script src="/js/index.js"></script>
+</body>
+</html

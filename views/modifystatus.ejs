@@ -1,0 +1,50 @@
+<style>
+      div {width: 400PX;
+    display: block;
+    margin: 100px auto;
+    padding: 40px;
+    BACKGROUND: #EEE;
+    TEXT-ALIGN: center;
+    height: 400px;
+    }
+    input {
+        display:block;
+        background-color: none;
+        border:1px solid black;
+        padding:10px;
+        margin:30px auto;
+       
+      
+    }
+    select {
+        display:block;
+        background-color: none;
+        border:1px solid black;
+        padding:10px;
+        margin:30px auto;
+        cursor:pointer;
+        
+    }
+    button {
+        display:block;
+        background-color: none;
+        border:1px solid black;
+        padding:10px;
+        margin:30px auto;
+       cursor:pointer
+    }
+</style>
+<form id="carstatuschange" action="/api/v1/car/update" method="POST">
+<div>
+Car Id:<input type="text" id="carId">
+<select id="carStatus" class="mt8">
+<option>reserved</option>
+<option>rented</option>   
+<option>active</option>   
+<option>broken</option>               
+</select>
+<button type="submit" id="submit">Submit</button>
+</div>
+</form>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="/js/index.js"></script>    

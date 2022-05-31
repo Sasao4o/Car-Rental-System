@@ -1,0 +1,56 @@
+<link rel="stylesheet" href="../css/carmodifications.css"></link>
+<section>
+    <div class="container">
+      <h1 id="title">Car Form</h1>
+      <p id="description">
+         Please Enter All Car Specs
+      </p>
+
+      <form id="car-form">
+        <div class="inputwrap col">
+          <label for="name" id="name-label" class="bold">Car Plate</label>
+          <input
+            class="mt8"
+            type="text"
+            id="carPlate"
+            required
+            placeholder="Enter Car Plate"
+          />
+        </div>
+        <div class="inputwrap col">
+          <label for="email" id="email-label" class="bold">Model</label>
+          <input
+            class="mt8"
+            required
+            id="carModel"
+            placeholder="Enter Car Model"
+          />
+        </div>
+        <div class="inputwrap col">
+          <label for="number" id="number-label" class="bold">Car Condition</label>
+          <input
+            class="mt8"
+            id="carCondition"
+            placeholder="Enter Car Condition"
+          />
+        </div>
+
+        <div class="inputwrap col">
+          <label for="gender" id="gender" class="bold"
+            >Select Warehouse</label
+          >
+          <select id="dropdown" class="mt8">
+            
+          </select>
+        </div>
+
+       
+
+      
+        <button type="submit" id="submit">Submit</button>
+      </form>
+    </div>
+  </section>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <script src="/js/index.js"></script>

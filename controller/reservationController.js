@@ -1,12 +1,21 @@
 const reservationModel = require("../model/reservationModel");
 const carModel = require("../model/carModel");
 const employeeModel = require("../model/employeeModel");
+const demanderModel = require("../model/demanderModel");
 const catchAsync = require("../utilis/catchAsync");
+const AppError = require("../utilis/AppError");
  
 
 exports.addReservation = catchAsync(async function (req, res, next) {
     let reserve = {};
-    reserve.Did = req.body.Did;
+    
+    const current_user = req.user;
+   
+    const did = await demanderModel.find({pid:current_user.pid});
+    
+    if (did.length == 0) return next(new AppError("You cant Do Reservation Right now..", 303));
+    
+    reserve.Did = did[0].Did;
     reserve.reserve_status = "On";
     reserve.startDate = req.body.startDate;
     reserve.EndDate = req.body.endDate;
@@ -40,8 +49,8 @@ exports.addReservation = catchAsync(async function (req, res, next) {
      
     res.status(202).json({
         statusCode:202,
-        message:"sucess",
-        carId:newReserve.insertId
+        message:"success",
+        reservationId:newReserve.insertId
     });
 
  
@@ -90,11 +99,11 @@ exports.findAllRevsByPeriod = catchAsync(async function (req, res, next) {
     //reserve.Eid = req.body.Eid;
    dates.start_date=req.body.start_date;
    dates.end_date=req.body.end_date;
-    const newReserve = await reservationModel.findAllByPeriod(dates.start_date,dates.end_date);
+    const reservations = await reservationModel.findAllByPeriod(dates.start_date,dates.end_date);
     res.status(202).json({
         statusCode:202,
-        message:"sucess"
-       // carId:newReserve.insertId
+        message:"success",
+       reservations
     });
 
 
@@ -159,3 +168,14 @@ exports.terminateReservation = catchAsync(async function (req, res, next) {
     })
  
 });
+
+
+exports.findAllRevsByCus = catchAsync(async function (req, res, next) {
+     const id = req.body.id;
+     const ress = await reservationModel.findCusRsrv(id);
+     res.status(202).json({
+         statusCode:202,
+         message:"success",
+         ress
+     });
+    });

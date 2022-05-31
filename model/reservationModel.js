@@ -71,6 +71,18 @@ reservationModel.deleteById = function () {
 }
 
 
+reservationModel.findAllByPeriod = function (start_date,end_date) {   
+    const  sql = `SELECT r.reserve_date,r.startDate,r.endDate,r.reserve_status,r.pay_status,c.NAME,c.model,c.plate_no,c.cond,p.fname,p.lname,p.email,p.gender,p.mobileno,p.BankNo FROM reservation AS r INNER JOIN demander AS d INNER JOIN person AS p INNER JOIN car AS c on( r.Did = d.Did AND r.car_id = c.car_id AND d.pid = p.pid) WHERE r.reserve_date BETWEEN '${start_date}' AND '${end_date}' GROUP BY r.reserve_id`;
+    const queryPromise = util.promisify(conn.query).bind(conn);
+    return queryPromise(sql);
+
+    
+}
+reservationModel.findCusRsrv = function (id) {   
+    const  sql = `SELECT fname, lname, email, mobileno, reserve_id, startDate, EndDate, plate_no,model, pay_status FROM reservation AS r INNER JOIN demander AS d INNER JOIN person AS p INNER JOIN car AS c on( r.Did = d.Did AND r.car_id = c.car_id AND d.pid = p.pid) WHERE d.Did = '${id}' GROUP BY d.Did;`;
+    const queryPromise = util.promisify(conn.query).bind(conn);
+    return queryPromise(sql);
 
 
+}
 module.exports = reservationModel;

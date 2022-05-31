@@ -1,0 +1,30 @@
+<link rel="stylesheet" href="../css/reserveStatus.css"></link>
+
+<div class="successmessage">
+    <h1>
+      <p  style="text-align:center">Reservations Status</p></h1>
+    
+    <p style="text-align:center">Current Reservation and Previous One Will Appear Here<br> 
+    done successfully</p>
+    
+    </div>
+     
+    <% reservations.forEach(function(res) { %>
+        <div class="card">
+          <p>Your RESV ID: <%= res.reserve_id%></p>
+          <p>Reservation Start Date :   <%= res.startDate.toISOString().split('T')[0] %>  </p>
+          <p>Reservation End Date:   <%= res.EndDate.toISOString().split('T')[0]  %></p>
+          <p>Car Model Reserved :  <%= res.carModel %>  </p>
+          <p>Reservation Status :  <%= res.reserve_status %>  </p>
+          <button id ="<%=res.reserve_id%>" class="btn-class">Terminate My Reservation</button>
+           <a href="myReservation/pay/<%=res.reserve_id%>">Pay</a> 
+        </div>
+    
+
+      <% }); %>
+<a href ="/">Get Me Back to Home Page</a>
+    
+     
+    
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="/js/index.js"></script>

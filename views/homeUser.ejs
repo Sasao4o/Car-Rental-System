@@ -1,51 +1,224 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Car renting</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-</head>
-<body>
-    <label for="search">Search</label>
-    <br>
-    <input type="text" id="search">
-    <br>
-    <br>
-    <table class="table table-hover" id="car table">
-      <thead>
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Model</th>
-            <th scope="col">Plate Number</th>
-            <th scope="col">Status</th>
-            <th scope="col">Condition</th>
-            <th scope="col">Warehouse id</th>
-        </tr>
-      </thead>
-      <tbody id="output">     
-      </tbody>
-    </table>
-    <br>
-    <br>
-    <label for="car id">Enter car id</label>
-    <br>
-    <input type="text" id="car id">
-    <br>
-    <br>
-    <input class="btn btn-primary" type="button" value="Reserve">
-    <br>
-    <br>
-    <input class="btn btn-primary" type="button" value="Pay">
-    <br>
-    <br>
-    <button id="myBtn" class="btn btn-primary">Logout</button>
+<!--follow and ask to @tarun.7.11 on instagram for the original webpage(fully responsive)-->
+<link rel="stylesheet" href="./css/homeUser.css"></link>
+<div class="main">
+  <div class="nav">
+    
+   
+   <a href="#" target="window" id="name" class="textmain navtitle"><b>Car's</b>&nbsp;Collection</a>
+   <a href="#" target="window" id="about" class="link textmain">
+       About
+     </a>
   
-    </script>
-    <br>
-    <br>
+    <% if(locals.user){ %>
+      <a href="#" id="signout" class="link textmain">
+        Sign Out
+      </a>
+      <% } %>
  
-</body>
-</html>
+     <% if(locals.user && locals.user.length > 0){ %>
+      <a href="/" class="yourname">
+        <%= locals.user[0].fname%> <%= locals.user[0].lname%> 
+      </a>
+ 
+    <% } else{ %>  
+      <a href="/signup" id="register"    class="link textmain">
+        Register
+      </a>
+      <a href="/login" id="login"    class="link textmain">
+        Login
+      </a>
+   <% } %>
+  
+  </div>
+  <div class="title">
+   <a href="#" target="window" id="title" class="textmain">
+    <b>Car's</b>&nbsp;Collection
+   </a><br>
+   <div class="tagline_box">
+    <p class="tagline textmain">A different kind of company.</p>
+    <p class="tagline textmain">A different kind of car.</p>
+   </div>
+   <hr class="textmain" style="width: 15%; size: 0;" />
+  </div>
+ </div>
+ 
+ <div class="feature">
+ 
+  <nav>
+      
+   <ul class="main_option" id="main_option">
+    <li class="options">
+     <a href="javascript:void(0)" class="textmain btn" id="" tagret="window"><i class="material-icons" style="float: right;">n</i>New Cars</a>
+      
+    </li>
+    <li class="options">
+     <a href="/myReservation" class="textmain btn" id="" >Check My Reservation<i class="material-icons">keyboard_arrow_down</i></a>
+ 
+    </li>
+ 
+   </ul>
+   <div id="search">
+    <label for="searchInput">  <i class="fa fa-search"></i>  </label>
+    <input id="searchInput" type="text" placeholder="Car Model">
+    <label for="searchInput">  <i class="fa fa-search"></i>  </label>
+    <input id="carStatussearchInput" type="text" placeholder="Car Status">
+    <label for="searchInput">  <i class="fa fa-search"></i>  </label>
+    <input id="carConditionSearchInput" type="text" placeholder="Car Condition">
+    <label for="searchInput">  <i class="fa fa-search"></i>  </label>
+    <input id="#" type="text" placeholder="Minmum Price">
+    <label for="searchInput">  <i class="fa fa-search"></i>  </label>
+    <input id="#" type="text" placeholder="Maxmium Price">
+</div>
+   <div class="menu">
+    <i id="menu_icon" style="margin:0; padding: 0;" class="material-icons">dehaze</i>
+    <p id="menu" style="margin:0;">More</div>
+  </nav>
+  </div>
+  <div class="body">
+  
+   <div class="main_container">
+    <% cars.forEach(function(car) { %>
+      <a href="/reserve/<%=car.car_id%> "> 
+    <div class="container fade-in one">
+ <img src="https://img00.deviantart.net/0264/i/2007/223/7/6/ferrari_logo_by_jnaegeli.jpg" alt="ferrari 488GTB" class="image"> 
+     <div class="detail">
+      <div class="text">
+       <p><b>Car Model: <span class="searchCarModel"><%=car.model %></span></b></p>
+         <p>The <b>car condition is <span class="searchCarCondition"><%=car.cond%></span></p>
+          <p>Plate Number is <%=car.plate_no %></p>
+          <p>Car Status  is <span class="searchCarStatus"><%=car.Status %></span></p>
+      </div>
+     </div>
+     <div class="info">
+      <p><%=car.model %></p>
+     
+     </div>
+    </div>
+  </a>
+    <% }); %>
+  
+  </div>
+ 
+  <footer class="footer fade-in">
+   <div class="social">
+    <div class="icon">
+     <a href="javascript:void(0)" target="window">
+      <img src="https://image.ibb.co/bBa7L6/if_1_Media_social_website_facebook_2657542.png" class="def_img">
+      <p class="soci_name" id="fb">facebook</p>
+      <img src="https://image.ibb.co/eLP1f6/2657542_512.png" class="ori_img">
+     </a>
+    </div>
+    <div class="icon" id="twitter">
+     <a href="javascript:void(0)" target="window">
+      <img src="https://image.ibb.co/kTg3tR/if_12_Media_social_website_Twitter_2657545.png" class="def_img">
+      <p class="soci_name" id="twit">twitter</p>
+      <img src="https://image.ibb.co/fPSbDR/2657545_512.png" class="ori_img">
+     </a>
+    </div>
+    <div class="icon">
+     <a href="javascript:void(0)" target="window">
+      <img src="https://image.ibb.co/mMvUYR/if_11_Media_social_website_youtube_2657544.png" class="def_img">
+      <p class="soci_name" id="utube">youtube</p>
+      <img src="https://image.ibb.co/dCjdSm/2657544_512.png" class="ori_img">
+     </a>
+    </div>
+   </div>
+   <hr size="1px" style="font-weight:bold; width:80%; color: #4E4F50">
+   <div class="footer_body">
+    <div class="footer_container">
+     <div class="footer_topic_main">
+      <div class="footer_topic">
+       <p class="texthead">
+        <a href="javascript:void(0)" class="texthead">Reviews</a>
+       </p>
+       <ul>
+        <li class="footer_text"><a href="" class="">First Drives</a></li>
+        <li class="footer_text"><a href="" class="">Instrumented Tests</a></li>
+        <li class="footer_text"><a href="" class="">Comparison Tests</a></li>
+        <li class="footer_text"><a href="" class="">Long-Term Road Tests</a></li>
+        <li class="footer_text"><a href="" class="">From the Review Vault</a></li>
+       </ul>
+      </div>
+      <div class="footer_topic">
+       <p class="texthead">
+        <a href="javascript:void(0)" class="texthead">NEWS</a>
+       </p>
+       <ul>
+        <li class="footer_text"><a href="" class="">Spy Photos</a></li>
+        <li class="footer_text"><a href="" class="">Auto Shows</a></li>
+        <li class="footer_text"><a href="" class="">Blog</a></li>
+       </ul>
+      </div>
+      <div class="footer_topic">
+       <p class="texthead">
+        <a href="javascript:void(0)" class="texthead">Features</a>
+       </p>
+       <ul>
+        <li class="footer_text"><a href="" class="">Spy Photos</a></li>
+        <li class="footer_text"><a href="" class="">Auto Shows</a></li>
+        <li class="footer_text"><a href="" class="">Blog</a></li>
+       </ul>
+      </div>
+     </div>
+     <div class="footer_topic_main">
+      <div class="footer_topic">
+       <p class="texthead">
+        <a href="javascript:void(0)" class="texthead">Features</a>
+       </p>
+       <ul>
+        <li class="footer_text"><a href="" class="">View Cars for Sale</a></li>
+        <li class="footer_text"><a href="" class="">2016 Editors' Choice</a></li>
+        <li class="footer_text"><a href="" class="">Ford F-150</a></li>
+        <li class="footer_text"><a href="" class="">Jeep Wrangler</a></li>
+        <li class="footer_text"><a href="" class="">Ford Escape</a></li>
+        <li class="footer_text"><a href="" class="">Honda Accord</a></li>
+        <li class="footer_text"><a href="" class="">Jeep Grand Cherokee</a></li>
+       </ul>
+      </div>
+      <div class="footer_topic">
+       <p class="texthead">
+        <a href="javascript:void(0)" class="texthead">About car & driver</a>
+       </p>
+       <ul>
+        <li class="footer_text"><a href="" class="">Subscribe</a></li>
+        <li class="footer_text"><a href="" class="">User Sitemap</a></li>
+        <li class="footer_text"><a href="" class="">Contact Us</a></li>
+        <li class="footer_text"><a href="" class="">Subscriptions/Customer</a></li>
+        <li class="footer_text"><a href="" class="">Service</a></li>
+        <li class="footer_text"><a href="https://goo.gl/forms/QIjvTGpiCd3xQvLi2" target="window">Website Feedback</a></li>
+       </ul>
+      </div>
+      <div class="footer_topic">
+       <p class="texthead">
+        <a href="javascript:void(0)" class="texthead">Follow us</a>
+       </p>
+       <ul>
+        <li class="footer_text"><a href="" class="">Facebook</a></li>
+        <li class="footer_text"><a href="" class="">Twiiter</a></li>
+        <li class="footer_text"><a href="" class="">YouTube</a></li>
+        <li class="footer_text"><a href="" class="">Instagram</a></li>
+       </ul>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="terms">
+    <div class="rights_main inline-block">
+     <span class="terms_containt_main terms_text">© 2017 Car's Collaction, Inc. All Rights Reserved., </span></div>
+    <div class="rights_mini"><span class="terms_containt_mini terms_text">© 2017 Car's Collaction, Inc. All Rights Reserved.,</span></div>
+    <div class="inline-block">
+     <a href="javascript:void(0)" class="terms_containt inline-block terms_text">Privacy Policy</a>
+     <p class="terms_text inline-block" style="margin: 0px;">|</p>
+     <a href="javascript:void(0)" class="terms_containt inline-block terms_text">Your California</a>
+     <p class="terms_text inline-block" style="margin: 0px;">|</p>
+     <a href="javascript:void(0)" class="terms_containt inline-block terms_text">Privacy Rights</a>
+     <p class="terms_text inline-block" style="margin: 0px;">|</p>
+     <a href="javascript:void(0)" class="terms_containt inline-block terms_text">Interest-Based Ads</a>
+     <p class="terms_text inline-block" style="margin: 0px;">|</p>
+     <a href="javascript;void(0)" class="terms_containt inline-block terms_text">Terms of Use</a>
+    </div>
+   </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="/js/index.js"></script>
+  <script src="/js/userSearch.js"></script>

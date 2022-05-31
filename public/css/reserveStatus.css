@@ -1,0 +1,43 @@
+ 
+  .successmessage{
+    margin-top:100px;
+    text-align:center;
+    align:center;
+      
+  }
+  a {
+ 
+    margin-top:25px;
+   display: block;
+   width: 100%;
+   bottom:50px;
+   min-height: 28px;  
+   text-align:center;
+   text-decoration: none;
+   font-size:30px;
+   color:black;
+   border:1px solid #EEE;
+  }
+
+  .card {
+    text-align: center;
+    border: 1px solid black;
+    width: 500px;
+    margin: auto;
+    padding: 20px;
+    background: #0055D9;
+    color: white;
+    font-weight: bold;
+    margin:20px auto;
+    border-radius:20px;
+  }
+
+  button {
+    background:none;
+    padding:12px;
+    border: 1px solid white;
+    cursor:pointer;
+    background-color: black;
+    color:white
+  }
+ 

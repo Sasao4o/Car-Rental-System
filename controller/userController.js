@@ -2,6 +2,7 @@ const userModel = require("../model/userModel");
 const demanderModel = require("../model/demanderModel");
 const supplierModel = require("../model/supplierModel");
 
+const AppError = require("../utilis/AppError");
 const authTools = require("../utilis/authTools");
 const catchAsync = require("../utilis/catchAsync");
 exports.signUp = catchAsync(async function (req, res, next) {
@@ -16,7 +17,13 @@ exports.signUp = catchAsync(async function (req, res, next) {
      user.cityId = req.body.cityId;
      user.phoneNumber =req.body.phoneNumber;
      user.visaNo=req.body.visaNo;
-     const userRole = req.body.userRole.toLowerCase(); //Demander Or Supplier
+    
+     const oldEmail = await userModel.find({email:user.email});
+     if (oldEmail.length != 0) {
+         return next(new AppError("This Email Already Exists"));
+     }
+    // const userRole = req.body.userRole.toLowerCase(); //Demander Or Supplier
+    const userRole = "demander"
      const newUser = await userModel.create(user);
      //Know Wether He is Demander Or Supplier
      /*  
@@ -26,7 +33,8 @@ exports.signUp = catchAsync(async function (req, res, next) {
      if (!newUser) {
          throw new Error("Please Sign Up Again..");
      }
-     if (userRole == "demander") {
+     //MUSTBEUPDATED 1 DE 3MAl ma n7ot l supplier
+     if (1 || userRole == "demander") {
       let demander = {};
       demander.person_id = newUser.insertId;
       const newDemander = await demanderModel.create(demander);
@@ -36,10 +44,11 @@ exports.signUp = catchAsync(async function (req, res, next) {
         const newSupplier = await supplierModel.create(supplier);
      }
      //End Knowing
-     const jwt = authTools.generateToken({username:newUser.firstname});
+  
+     const jwt = authTools.generateToken({id:newUser.insertId});
      res.cookie("jwt", jwt);
     res.json({
-        status:200,
+        status:"success",
         message:"Success",
         jwt,
         id:newUser.insertId
@@ -50,33 +59,32 @@ exports.signUp = catchAsync(async function (req, res, next) {
 exports.signIn = catchAsync(async function(req, res, next) {
     const email = req.body.email;
     const password = req.body.password;
-    console.log(req.body);
-    if (!email || !password) {
-       return next("Please Enter Email And Password");
+    const role = req.body.role;
+     
+    if (!email || !password || !role) {
+       return next(new AppError("Please Enter Your Email and Password", "401"));
     }
-    const user = await userModel.find({email});
+    const user = await userModel.find({email, role});
      
     const currentUser = user[0];
     if (!currentUser) {
 
-        return next("Please Enter Correct Email And Password");
+        return next(new AppError("Please Enter correct Email and Password", "401"));
     }
    
    
     const isPasswordTrue = authTools.verifyPassword(password, currentUser.PASSWORD);
      if (!isPasswordTrue) {
-        return next("Please Enter Correct Email And Password");
+        return next(new AppError("Please Enter correct Email and Password", "401"));
      }
      const jwt = authTools.generateToken({id:currentUser.pid});
      res.cookie("jwt", jwt);
-     /*
+ 
     res.json({
-        status:404,
-        message:"Success",
+        status:"success",
         jwt
     });
-    */
-     res.redirect("/");
+  
 });
 
 exports.signOut = catchAsync(async function (req, res ,next) {
@@ -111,8 +119,11 @@ exports.protectRoute = catchAsync(async (req, res, next) => {
     const tokenVeri = await authTools.tokenVerify(token); 
     if (!tokenVeri) return next("Please Sign In Again");
     const user = await userModel.find({pid:tokenVeri.id});
-    if (!user) return next("Please sign in again error token is invalid", 404)
-    req.user = user;
+   
+    if (user.length == 0) return next("Please sign in again error token is invalid", 404)
+    req.user = user[0];
+  
+    res.locals.user = user;
     next();
  });
  
@@ -127,3 +138,46 @@ exports.restrictedTo = (...roles) => {
  
     }
  }
+ exports.isLoggedIn = catchAsync(async (req, res, next) => {
+    const token =  req.cookies.jwt;
+    if (!token) return next();
+    const tokenVeri = await authTools.tokenVerify(token); 
+    if (!tokenVeri) return next();
+    const user = await userModel.find({pid:tokenVeri.id});
+    if (!user) return next();
+    req.user = user;
+    res.locals.user = user;
+     
+    next();
+ });
+ exports.findAllPayByPeriod = catchAsync(async function (req, res, next) {
+  
+   
+    var start_date=req.body.start_date;
+    var end_date=req.body.end_date;
+     const payment = await userModel.findPayByPeriod(start_date,end_date);
+     res.status(202).json({
+         statusCode:202,
+         message:"sucess",
+         payment
+    
+     });
+ 
+ 
+ 
+ 
+ 
+ });
+
+ exports.getDemanderId = catchAsync(async (req, res, next) => {
+    const user = req.user;
+    let userId=user.pid;
+ 
+    const demander = await demanderModel.find({pid:userId});
+    console.log(demander);
+    res.json({
+        status:"success",
+        id:demander[0].Did
+    })
+    
+ });

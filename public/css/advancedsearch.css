@@ -1,0 +1,130 @@
+ 
+
+* {
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+    transition: 0.3s;
+  }
+  
+  body {
+      margin: 0;
+  }
+  
+  section {
+      background-image: url("https://images.unsplash.com/photo-1503252947848-7338d3f92f31?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1031&q=80");
+      background-size: cover;
+      background-repeat: no-repeat;
+      width: 100vw;
+      height:100vh;
+      overflow: scroll;
+      background-position: fixed;
+      display: flex;
+      justify-content: center;
+  }
+  
+  .container {
+      background-color: white;
+      height: fit-content;
+      padding: 50px 80px;
+      margin: 50px;
+      width: 100%;
+      max-width: 600px;
+  }
+  
+  h1 {
+      font-family: 'Abril Fatface', cursive;
+      font-size: 3.2rem;
+      margin: 0;
+      text-align: center;
+  }
+  
+  #description {
+      text-align: center;
+  }
+  
+  form {
+      display: flex;
+      flex-direction: column;
+      margin-top: 50px;
+  }
+  
+  .inputwrap {
+      margin: 10px 0;
+  }
+  
+  .col {
+      display: flex;
+      flex-direction: column;
+  
+  }
+  
+  .mt8 {
+      margin-top: 8px;
+  }
+  
+  input, select {
+      padding: 15px;
+      font-size: 0.9rem;
+  }
+  
+  .bold {
+      font-weight: 600;
+      font-size: 1.1rem;
+  }
+  
+  textarea {
+      width: 100%;
+  }
+  
+  button {
+      margin-top: 50px;
+      padding: 15px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: white;
+      background-color: black;
+  }
+  
+  button:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+  }
+  
+  label:hover, input[type="radio"], input[type="checkbox"] {
+    cursor: pointer;
+  }
+  
+  @media screen and (max-width: 600px){
+      h1 {
+          font-size: 2rem;
+      }
+  }
+  table {
+    border:1px solid black;
+ 
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+   tr {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: left;
+}
+ th,
+ td {
+    padding: 12px 15px;
+}
+
+ tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+ tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+ tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}

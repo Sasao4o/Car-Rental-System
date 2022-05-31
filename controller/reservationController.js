@@ -179,3 +179,9 @@ exports.findAllRevsByCus = catchAsync(async function (req, res, next) {
          ress
      });
     });
+    exports.getReservations = async (req, res ,next) => {
+        const reservations = await reservationModel.findAll();
+        console.log(reservations);
+    
+    
+     }

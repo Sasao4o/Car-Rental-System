@@ -48,4 +48,5 @@ reportAndSearchModel.findAllByPeriod = function (start_date,end_date) {
 
   
 }
+
 module.exports = reportAndSearchModel;

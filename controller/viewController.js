@@ -94,3 +94,9 @@ exports.getReport2 = async(req, res, next) => {
      console.log("s");
      res.render("checkout");
  }
+ exports.getReservations = async (req, res ,next) => {
+    const reservations = await reservationModel.findAll();
+    console.log(reservations)
+    res.render("reservations" , {reservations});
+
+ }

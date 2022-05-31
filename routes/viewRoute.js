@@ -35,6 +35,7 @@ router.get("/myReservation", userController.protectRoute, viewController.showDem
 router.get("/myReservation/pay/:id", userController.protectRoute, viewController.showPaymentForm);
 router.get("/signup", viewController.signUp);
 router.get("/admin/search", viewController.getSearchPage);
+router.get("/admin/reservations", viewController.getReservations);
 router.post("/search/results", viewController.search);
 router.get("/admin/reports", (req, res, next) => {
     res.render("reports");

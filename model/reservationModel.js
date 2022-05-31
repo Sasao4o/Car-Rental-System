@@ -44,11 +44,11 @@ reservationModel.findById = function (reservationId) {
     return queryPromise(sql);
 
 }
-
 reservationModel.findAll = function () {
-
+    const  sql = `SELECT * FROM reservation`
+    const queryPromise = util.promisify(conn.query).bind(conn);
+    return queryPromise(sql);
 }
-
 reservationModel.updateById = function(reservationId , updateObject) {
     let conditions = "";
     var counter = 1;
